@@ -30,8 +30,8 @@ bool isColorUnique(int xi, int yi, int xf, int yf, CImg<char> &image){
 void insert(int xi, int yi, int xf, int yf, CImg<char> &image, ofstream &output_file){
     bool unique = isColorUnique(xi,yi,xf,yf,image);
     if(unique){
-        if(image((xf+xi)/2,(yf+yi)/2) == -1) return;
-        pixel_des pd = {xi,yi,xf,yf,image((xf+xi)/2,(yf+yi)/2)};
+        if(image(yi,xi) == -1) return;
+        pixel_des pd = {xi, xf, yi, yf,image(yi,xi)};
         output_file.write((char*)&pd, sizeof(pixel_des));
     } else {
         int mx = (xf+xi)/2;
@@ -55,13 +55,13 @@ void insert(CImg<char> &image){
 CImg<char> reconstruir(int w, int h, string filename){
     ifstream input_file(filename, ios::binary);
     pixel_des pd;
-    CImg<char> R(w,h);
+    CImg<unsigned char> R(w,h, 1, 1, 255); 
     while(input_file.read((char*)&pd, sizeof(pixel_des))){
         cout << pd.xi << ' ' << pd.xf << ' ' << pd.yi << ' ' << pd.yf << ' ' << pd.val << '\n';
         for(int i=pd.xi;i<pd.xf;i++){
             for(int j=pd.yi;j<pd.yf;j++)
             {
-                R(i,j) = 0;
+                R(j,i) = 0;
             }
         }
     }
