@@ -25,7 +25,7 @@ CImg<char> Binarizar(CImg<float> & img, int umbral)
 
 int main(){
     CImg<float> A("cara.jpg");
-    //CImg<float> B = A.crop(0, 0, 80, 80); 
+    //CImg<float> B = A.crop(0, 0, 80, 100); 
     CImg<char> R = Binarizar(A,40);
 
     //A.display();

@@ -48,7 +48,7 @@ void insert(CImg<char> &image){
     int w = image.width();
     int h = image.height();
     ofstream output_file("output.txt", ios::binary | ios::trunc);
-    insert(0,0,w,h,image,output_file);
+    insert(0,0,h,w,image,output_file);
 }
 
 
@@ -57,7 +57,6 @@ CImg<char> reconstruir(int w, int h, string filename){
     pixel_des pd;
     CImg<unsigned char> R(w,h, 1, 1, 255); 
     while(input_file.read((char*)&pd, sizeof(pixel_des))){
-        cout << pd.xi << ' ' << pd.xf << ' ' << pd.yi << ' ' << pd.yf << ' ' << pd.val << '\n';
         for(int i=pd.xi;i<pd.xf;i++){
             for(int j=pd.yi;j<pd.yf;j++)
             {
