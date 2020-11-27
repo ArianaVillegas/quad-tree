@@ -25,16 +25,16 @@ CImg<char> Binarizar(CImg<float> & img, int umbral)
 
 int main(){
     CImg<float> A("cara.jpg");
-    CImg<float> B = A.crop(0, 0, 3, 3); 
+    //CImg<float> B = A.crop(0, 0, 3, 3); 
     //CImg<char> R = Binarizar(A,40);
 
-    B.display();
+    A.display();
     //R.display();
 
     // vector<vector<bool>> values = {{1, 1, 0, 0},{1, 1, 1, 0},{0, 0, 1, 0},{0, 0, 0, 0}};
 
-    insert(B, 0, "output.txt");
-    CImg<float> F = reconstruir(B.width(),B.height(),"output.txt");
+    insert(A, 50, "output.txt");
+    CImg<float> F = reconstruir(A.width(),A.height(),"output.txt");
     F.display();
     F.save("out.png");
 

@@ -70,9 +70,8 @@ void insert(CImg<float> &image, int umbral, string filename){
 CImg<float> reconstruir(int w, int h, string filename){
     ifstream input_file(filename, ios::binary);
     pixel_des pd;
-    CImg<float> R(w,h); 
+    CImg<float> R(w,h,1,3); 
     while(input_file.read((char*)&pd, sizeof(pixel_des))){
-        cout << pd.r << ' ' << pd.g << ' ' << pd.b << '\n';
         for(int i=pd.xi;i<pd.xf;i++){
             for(int j=pd.yi;j<pd.yf;j++)
             {
