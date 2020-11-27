@@ -24,7 +24,8 @@ CImg<char> Binarizar(CImg<float> & img, int umbral)
 
 
 int main(){
-    CImg<float> A("cara.jpg");
+    CImg<float> A("img3.jpg");
+    A.save("in.jpg");
     //CImg<float> B = A.crop(0, 0, 3, 3); 
     //CImg<char> R = Binarizar(A,40);
 
@@ -36,7 +37,7 @@ int main(){
     insert(A, 50, "output.txt");
     CImg<float> F = reconstruir(A.width(),A.height(),"output.txt");
     F.display();
-    F.save("out.png");
+    F.save("out.jpg");
 
     return 1;
 }

@@ -13,8 +13,8 @@ using namespace cimg_library;
 using namespace std;
 
 struct pixel_des{
-    int xi, xf, yi, yf;
-    int r,g,b;
+    unsigned short xi, xf, yi, yf;
+    unsigned char r,g,b;
 };
 
 bool isColorUnique(int xi, int yi, int xf, int yf, int umbral, tuple<int,int,int> &rgb,
@@ -45,7 +45,6 @@ void insert(int xi, int yi, int xf, int yf, int umbral, CImg<float> &image, ofst
     tuple<int,int,int> rgb;
     bool unique = isColorUnique(xi,yi,xf,yf,umbral,rgb,image);
     if(unique){
-        //if(image(yi,xi) == -1) return;
         pixel_des pd = {xi, xf, yi, yf, get<0>(rgb), get<1>(rgb), get<2>(rgb)};
         output_file.write((char*)&pd, sizeof(pixel_des));
     } else {
