@@ -23,21 +23,55 @@ CImg<char> Binarizar(CImg<float> & img, int umbral)
 }
 
 
+void tester(string filename, int &i, int threshold) {
+    ifstream infile(filename);
+    string path;
+
+    clock_t tStart, tEnd;
+    double timeTaken;
+    int nNodos;
+    cout << "Test\tInp Size  Ins Time  N nodes  Quad Size  Out Size  Comp Quad  Comp Img Rec Time  Treshold\n";
+    while (getline(infile, path)) {
+        nNodos = 0;
+        cout << "test" << i << "\t";
+        CImg<float> testImage(path.c_str());
+        string nameImageInput = "input_images/input_image_"+ to_string(i) + ".jpg";
+        string nameImageOutput = "output_images/output_image_"+ to_string(i) + ".jpg";
+        string quadTreeFile = "quatrees_images/quadTree_image_"+ to_string(i) + ".bin";
+        
+        testImage.save(nameImageInput.c_str());
+        long long inSIze = cimg::fsize(nameImageInput.c_str());
+        cout << inSIze << "  ";
+
+        tStart = clock();
+        insert(testImage, threshold, quadTreeFile, nNodos);
+        tEnd = clock();
+        timeTaken = double(tEnd - tStart)/CLOCKS_PER_SEC; 
+        long long quadSize = cimg::fsize(quadTreeFile.c_str());
+        cout << timeTaken << "  "<< nNodos << "  " << quadSize << "  ";
+
+
+        CImg<float> outputImage = reconstruir(testImage.width(),testImage.height(),quadTreeFile);
+        tEnd = clock();
+        timeTaken = double(tEnd - tStart)/CLOCKS_PER_SEC - timeTaken; 
+        
+        outputImage.save(nameImageOutput.c_str());
+        long long outSize = cimg::fsize(nameImageOutput.c_str());
+        cout << outSize << " " << 100 - (double) quadSize/ (double) inSIze*100 <<"% " << 100 - (double) outSize/ (double) inSIze*100 <<"% " << timeTaken << "  " << threshold << endl;
+
+        i++;
+    }
+
+    infile.close();  
+    
+}
+
 int main(){
-    CImg<float> A("img3.jpg");
-    A.save("in.jpg");
-    //CImg<float> B = A.crop(0, 0, 3, 3); 
-    //CImg<char> R = Binarizar(A,40);
 
-    A.display();
-    //R.display();
-
-    // vector<vector<bool>> values = {{1, 1, 0, 0},{1, 1, 1, 0},{0, 0, 1, 0},{0, 0, 0, 0}};
-
-    insert(A, 50, "output.txt");
-    CImg<float> F = reconstruir(A.width(),A.height(),"output.txt");
-    F.display();
-    F.save("out.jpg");
-
+    string filenameTestFile = "data.txt";
+    int i=0;
+    vector<int> thresholds = {10, 25, 50, 75};
+    for (auto t:thresholds)
+        tester(filenameTestFile, i, t);
     return 1;
 }

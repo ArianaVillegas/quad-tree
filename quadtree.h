@@ -41,28 +41,29 @@ bool isColorUnique(int xi, int yi, int xf, int yf, int umbral, tuple<int,int,int
     return true;
 }
 
-void insert(int xi, int yi, int xf, int yf, int umbral, CImg<float> &image, ofstream &output_file){
+void insert(int xi, int yi, int xf, int yf, int umbral, CImg<float> &image, ofstream &output_file, int &nNodos){
     tuple<int,int,int> rgb;
     bool unique = isColorUnique(xi,yi,xf,yf,umbral,rgb,image);
     if(unique){
         pixel_des pd = {xi, xf, yi, yf, get<0>(rgb), get<1>(rgb), get<2>(rgb)};
         output_file.write((char*)&pd, sizeof(pixel_des));
+        nNodos++;
     } else {
         int mx = (xf+xi)/2;
         int my = (yf+yi)/2;
-        if(xi!=mx && yi!=my) insert(xi,yi,mx,my,umbral,image,output_file);
-        if(mx!=xf && yi!=my) insert(mx,yi,xf,my,umbral,image,output_file);
-        if(xi!=mx && my!=yf) insert(xi,my,mx,yf,umbral,image,output_file);
-        if(mx!=xf && my!=yf) insert(mx,my,xf,yf,umbral,image,output_file);
+        if(xi!=mx && yi!=my) insert(xi,yi,mx,my,umbral,image,output_file, nNodos);
+        if(mx!=xf && yi!=my) insert(mx,yi,xf,my,umbral,image,output_file, nNodos);
+        if(xi!=mx && my!=yf) insert(xi,my,mx,yf,umbral,image,output_file, nNodos);
+        if(mx!=xf && my!=yf) insert(mx,my,xf,yf,umbral,image,output_file, nNodos);
     }
 }
 
 
-void insert(CImg<float> &image, int umbral, string filename){
+void insert(CImg<float> &image, int umbral, string filename, int &nNodos){
     int w = image.width();
     int h = image.height();
     ofstream output_file(filename, ios::binary | ios::trunc);
-    insert(0,0,h,w,umbral,image,output_file);
+    insert(0,0,h,w,umbral,image,output_file, nNodos);
 }
 
 
